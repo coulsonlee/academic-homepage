@@ -1,26 +1,56 @@
 ---
 layout: default
-title : Homepage
-navbar_title: Home (Layout 2)
+title : Lab
+navbar_title: lab
+permalink: /
 ---
-{% include widgets/profile_card.html %}
 
-{% if site.data.display.homepage.show_experience %}
-    {% include widgets/experience_card.html %}
+<div class="my-3 bg-white shadow-sm rounded-xl">
+    <h5 class="p-4 mb-0 border-bottom border-gray">{{ site.data.lab.name }}</h5>
+    <div class="p-4">
+        {% for paragraph in site.data.lab.introduction %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% if site.data.lab.highlights %}
+<div class="my-3 bg-white shadow-sm rounded-xl">
+    <h6 class="p-3 mb-0 border-bottom border-gray"><i class="fas fa-star"></i> Recent Highlights</h6>
+    <div class="px-3 py-2 small">
+        {% for item in site.data.lab.highlights %}
+        <div class="my-2 d-flex">
+            <div>{{ item.title }}</div>
+            <div class="ml-auto mt-auto text-muted no-break"><i>{{ item.date }}</i></div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endif %}
 
-{% if site.data.display.homepage.show_news %}
-    {% assign count_news = site.news | size %}
-    {% if count_news > 0 %}
-        {% include widgets/news_card.html limit=site.data.display.homepage.num_news %}
-    {% endif %}
-{% endif %}
-
-{% if site.data.display.homepage.show_selected_publications %}
-    {% assign pubs = site.publications | sort: "date" | reverse | where: "selected", true %}
-    {% 
-        include widgets/publication_card.html 
-        publications=pubs
-        title='<i class="fas fa-star"></i> Selected Publications'
-    %}
-{% endif %}
+<div class="my-3 bg-white shadow-sm rounded-xl">
+    <h6 class="p-3 mb-0 border-bottom border-gray"><i class="fas fa-users"></i> Students</h6>
+    <div class="p-3">
+        <div class="row">
+            {% for group in site.data.lab.students %}
+            <div class="col-lg-4 mb-3">
+                <h6>{{ group.group }}</h6>
+                {% if group.people and group.people.size > 0 %}
+                <ul class="list-unstyled small mb-0">
+                    {% for person in group.people %}
+                    <li class="mb-2">
+                        <div>{{ person.name }}</div>
+                        {% if person.description %}
+                        <div class="text-muted">{{ person.description }}</div>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="small text-muted">To be added.</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

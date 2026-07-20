@@ -1,8 +1,14 @@
-{% assign news_by_year = site.news | sort: "date" | reverse | slice: 0, include.limit | group_by_exp: "item", "item.date | date: '%Y'" -%}
+{% assign news_source = site.news | where: "slug", "news" | first -%}
+{% if news_source.items %}
+{% assign news_items = news_source.items | sort: "date" | reverse | slice: 0, include.limit -%}
+{% else %}
+{% assign news_items = site.news | sort: "date" | reverse | slice: 0, include.limit -%}
+{% endif %}
+{% assign news_by_year = news_items | group_by_exp: "item", "item.date | date: '%Y'" -%}
 
 <div class="my-3 bg-white shadow-sm rounded-xl">
     <h6 class="p-3 mb-0 border-bottom border-gray"><i class="fas fa-rss"></i> News</h6>
-    <div class="px-3 pb-1 small">
+    <div class="px-3 pb-1 small" style="max-height: 260px; overflow-y: auto;">
         {% for year in news_by_year %}
         <div class="media py-1 {% if not_first -%}border-top border-gray{%- endif %}">
             {% assign not_first = true %}
@@ -11,7 +17,7 @@
                 {% for item in year.items %}
                 <div class="my-1 d-flex">
                     <div>{{ item.title }}</div>
-                    <div class="ml-auto mt-auto text-muted no-break"><i>{{ item.date | date: "%b %d" }}</i></div>
+                    <div class="ml-auto mt-auto text-muted no-break"><i>{% if item.date_label %}{{ item.date_label }}{% else %}{{ item.date | date: "%b %d" }}{% endif %}</i></div>
                 </div>
                 {% endfor %}
             </div>

@@ -1,0 +1,27 @@
+---
+layout: default
+title : Teaching
+navbar_title: Teaching
+---
+
+<div class="my-3 bg-white shadow-sm rounded-xl">
+    <h5 class="p-4 mb-0 border-bottom border-gray">Teaching</h5>
+    <div class="p-4">
+        <h6>Courses</h6>
+        <ul class="list-unstyled mb-4">
+            {% for course in site.data.teaching.courses %}
+            <li class="mb-3">
+                <div>{{ course.title }}</div>
+                <div class="small text-muted">{{ course.term }}</div>
+                <div class="small">{{ course.description }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <h6>Office</h6>
+        <div class="small">
+            <div><strong>Location:</strong> {{ site.data.teaching.office.location }}</div>
+            <div><strong>Office hours:</strong> {{ site.data.teaching.office.hours }}</div>
+        </div>
+    </div>
+</div>
